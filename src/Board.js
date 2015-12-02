@@ -79,12 +79,21 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      var boardRows = this.rows();
+      return(_.reduce(boardRows[rowIndex],function(accumulator, value){
+        return accumulator+value;
+      }, 0) > 1);
+
+
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      var result = false;
+      for(var i = 0; i<this.rows().length; i++){
+        result = result || this.hasRowConflictAt(i);
+      }
+      return result;
     },
 
 
@@ -94,12 +103,25 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      var column = [];
+      for(var i = 0; i<this.rows().length; i++){
+        column.push(this.rows()[i][colIndex])
+      }
+
+      return(_.reduce(column,function(accumulator, value){
+        return accumulator+value;
+      }, 0) > 1);
+
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      var result = false;
+      for(var i = 0; i<this.rows().length; i++){
+        result = result || this.hasColConflictAt(i);
+      }
+      return result;
+
     },
 
 
@@ -109,12 +131,27 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var result = [];
+      var index = this.rows().length - majorDiagonalColumnIndexAtFirstRow;
+      for(var i = 0; i<index; i++){
+        result.push(this.rows()[i][majorDiagonalColumnIndexAtFirstRow + i]);
+      }
+      
+      return(_.reduce(result,function(accumulator, value){
+        return accumulator+value;
+      }, 0) > 1);
+
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      debugger;
+      var result = false;
+      for(var i = 0; i<this.rows().length; i++){
+        result = result || this.hasMajorDiagonalConflictAt(i);
+      }
+      return result;
+
     },
 
 
