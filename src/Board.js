@@ -141,7 +141,6 @@
       } else {
         for (var j = -majorDiagonalColumnIndexAtFirstRow; j < this.rows().length; j++) {
           result.push(this.rows()[j][majorDiagonalColumnIndexAtFirstRow + j]);
-          console.log(j);
         };
 
       }
@@ -186,13 +185,6 @@
         }
 
       }
-
-
-
-
-
-
-
       
       return(_.reduce(result,function(accumulator, value){
         return accumulator+value;
