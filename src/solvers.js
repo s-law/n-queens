@@ -43,16 +43,17 @@ window.countNRooksSolutions = function(n) {
         // add piece
         board.togglePiece(row, col);
 
-        debugger;
+        if(n>1) debugger;
         if (!board.hasAnyRooksConflicts()) {
           row++;
           subroutine(board);
           // remove piece
+          row--;
           if (row !== n) {
             board.togglePiece(row, col);
           }
-          row--;
         } else {
+          //remove piece
           board.togglePiece(row, col);
         }
       }
