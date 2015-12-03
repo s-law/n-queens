@@ -31,61 +31,35 @@ window.findNRooksSolution = function(n) {
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
   var solutionCount = 0;
-  var steps = 0;
-  //create nxn board and store to workspace var
+  var row = 0;
+
   var start = new Board({'n':n});
-  var boardArr = start.rows();
-  //create subroutine
-  var subroutine  = function(array) {
-  //BASE CASE
-    if(steps === n){
+
+  var subroutine  = function(board) {
+    if (row === n) {
       solutionCount++;
-      steps--;
     } else {
-  //RECURSIVE CASE
-      for (var i = 0; i<n; i++) {
+      for (var col = 0; col < n; col++) {
+        // add piece
+        board.togglePiece(row, col);
 
-        //turn array of arrays into flat array
-        var flatArray = [];
-        for (var j = 0; j < n; j++) {
-          flatArray = flatArray.concat(array[j]);
-        }
-
-        // make a copy of flat array to work with
-        var newBoardArr = [];
-        var boardSlice = [];
-        var newBoardArrFlat = flatArray.slice();
-
-        // convert flat array back into array of arrays
-        for (var k = 0; k < n; k++) {
-          boardSlice = newBoardArrFlat.slice(0,n);
-          newBoardArr.push(boardSlice);
-          newBoardArrFlat = newBoardArrFlat.slice(n, newBoardArrFlat.length);
-        }  
-
-        //add a piece at space "i"
-        newBoardArr[steps][i] = 1;
-        steps++;
-        
-        var newBoard = new Board(newBoardArr);
-
-        //if no conflict
-        if(!newBoard.hasAnyRooksConflicts()){
-          //call subroutine on new var
-          subroutine(newBoardArr);
+        debugger;
+        if (!board.hasAnyRooksConflicts()) {
+          row++;
+          subroutine(board);
+          // remove piece
+          if (row !== n) {
+            board.togglePiece(row, col);
+          }
+          row--;
         } else {
-          steps--;
+          board.togglePiece(row, col);
         }
-      };
+      }
     }
+  
   };
-
-
-
-
-  //call subroutine on nxn board
-  subroutine(boardArr);
-
+  subroutine(start);
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
