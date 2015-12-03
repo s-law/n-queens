@@ -37,33 +37,47 @@ window.countNRooksSolutions = function(n) {
   var boardArr = start.rows();
   //create subroutine
   var subroutine  = function(array) {
-
   //BASE CASE
-    //if steps === n;
     if(steps === n){
-      //increment solutionCount
       solutionCount++;
-      steps = 0;
-    }
+      steps--;
+    } else {
   //RECURSIVE CASE
-    // take in array of arrays
-    //  
-    //for loop across row "step"
-    steps++;
-    for (var i = 0; i<n; i++) {
-            
-      //copy input var to new var
-      var newBoard = board;
-      //add a piece at space "i"
-      //if no conflict
-      if(!newBoard.hasAnyRooksConflicts()){
-        //increment steps
-        //call subroutine on new var
-        subroutine(newBoard);
-      } else {
-        steps--;
-      }
-    };
+      for (var i = 0; i<n; i++) {
+
+        //turn array of arrays into flat array
+        var flatArray = [];
+        for (var j = 0; j < n; j++) {
+          flatArray = flatArray.concat(array[j]);
+        }
+
+        // make a copy of flat array to work with
+        var newBoardArr = [];
+        var boardSlice = [];
+        var newBoardArrFlat = flatArray.slice();
+
+        // convert flat array back into array of arrays
+        for (var k = 0; k < n; k++) {
+          boardSlice = newBoardArrFlat.slice(0,n);
+          newBoardArr.push(boardSlice);
+          newBoardArrFlat = newBoardArrFlat.slice(n, newBoardArrFlat.length);
+        }  
+
+        //add a piece at space "i"
+        newBoardArr[steps][i] = 1;
+        steps++;
+        
+        var newBoard = new Board(newBoardArr);
+
+        //if no conflict
+        if(!newBoard.hasAnyRooksConflicts()){
+          //call subroutine on new var
+          subroutine(newBoardArr);
+        } else {
+          steps--;
+        }
+      };
+    }
   };
 
 
