@@ -19,6 +19,7 @@ window.findNRooksSolution = function(n) {
   var solved = false;
   var solution;
   var row = 0;
+  var prevCol = [];
 
   var start = new Board({'n':n});
 
@@ -30,22 +31,26 @@ window.findNRooksSolution = function(n) {
       return;
     } else {
       for (var col = 0; col < n; col++) {
-        // add piece
-        if (!solved) {
-          board.togglePiece(row, col);  
-        }
-        
-        if (!board.hasAnyRooksConflicts() && !solved) {
-          row++;
-          subroutine(board);
-          // remove piece
-          row--;
-          if (row !== n && !solved) {
+        if (prevCol.indexOf(col) === -1) {
+          if (!solved) {
             board.togglePiece(row, col);
+            prevCol.push(col);
           }
-        } else if (!solved){
-          //remove piece
-          board.togglePiece(row, col);
+          
+          if (!board.hasAnyRooksConflicts() && !solved) {
+            row++;
+            subroutine(board);
+            // remove piece
+            row--;
+            if (row !== n && !solved) {
+              board.togglePiece(row, col);
+              prevCol.pop(col);
+            }
+          } else if (!solved){
+            //remove piece
+            board.togglePiece(row, col);
+            prevCol.pop(col);
+          }
         }
       }
     }
@@ -64,6 +69,7 @@ window.findNRooksSolution = function(n) {
 window.countNRooksSolutions = function(n) {
   var solutionCount = 0;
   var row = 0;
+  var prevCol = [];
 
   var start = new Board({'n':n});
 
@@ -73,19 +79,24 @@ window.countNRooksSolutions = function(n) {
     } else {
       for (var col = 0; col < n; col++) {
         // add piece
-        board.togglePiece(row, col);
-
-        if (!board.hasAnyRooksConflicts()) {
-          row++;
-          subroutine(board);
-          // remove piece
-          row--;
-          if (row !== n) {
-            board.togglePiece(row, col);
-          }
-        } else {
-          //remove piece
+        if (prevCol.indexOf(col) === -1) {
           board.togglePiece(row, col);
+          prevCol.push(col);
+
+          if (!board.hasAnyRooksConflicts()) {
+            row++;
+            subroutine(board);
+            // remove piece
+            row--;
+            if (row !== n) {
+              board.togglePiece(row, col);
+              prevCol.pop(col);
+            }
+          } else {
+            //remove piece
+            board.togglePiece(row, col);
+            prevCol.pop(col);
+          }
         }
       }
     }
@@ -102,6 +113,7 @@ window.findNQueensSolution = function(n) {
   var solved = false;
   var solution;
   var row = 0;
+  var prevCol = [];
 
   var start = new Board({'n':n});
 
@@ -113,22 +125,26 @@ window.findNQueensSolution = function(n) {
       return;
     } else {
       for (var col = 0; col < n; col++) {
-        // add piece
-        if (!solved) {
-          board.togglePiece(row, col);  
-        }
-        
-        if (!board.hasAnyQueensConflicts() && !solved) {
-          row++;
-          subroutine(board);
-          // remove piece
-          row--;
-          if (row !== n && !solved) {
+        if (prevCol.indexOf(col) === -1) {
+          if (!solved) {
             board.togglePiece(row, col);
+            prevCol.push(col);
           }
-        } else if (!solved){
-          //remove piece
-          board.togglePiece(row, col);
+          
+          if (!board.hasAnyQueensConflicts() && !solved) {
+            row++;
+            subroutine(board);
+            // remove piece
+            row--;
+            if (row !== n && !solved) {
+              board.togglePiece(row, col);
+              prevCol.pop(col);
+            }
+          } else if (!solved){
+            //remove piece
+            board.togglePiece(row, col);
+            prevCol.pop(col);
+          }
         }
       }
     }
@@ -148,6 +164,7 @@ window.countNQueensSolutions = function(n) {
 
   var solutionCount = 0;
   var row = 0;
+  var prevCol = [];
 
   var start = new Board({'n':n});
 
@@ -157,19 +174,24 @@ window.countNQueensSolutions = function(n) {
     } else {
       for (var col = 0; col < n; col++) {
         // add piece
-        board.togglePiece(row, col);
-
-        if (!board.hasAnyQueensConflicts()) {
-          row++;
-          subroutine(board);
-          // remove piece
-          row--;
-          if (row !== n) {
-            board.togglePiece(row, col);
-          }
-        } else {
-          //remove piece
+        if (prevCol.indexOf(col) === -1) {
           board.togglePiece(row, col);
+          prevCol.push(col);
+
+          if (!board.hasAnyQueensConflicts()) {
+            row++;
+            subroutine(board);
+            // remove piece
+            row--;
+            if (row !== n) {
+              board.togglePiece(row, col);
+              prevCol.pop(col);
+            }
+          } else {
+            //remove piece
+            board.togglePiece(row, col);
+            prevCol.pop(col);
+          }
         }
       }
     }
