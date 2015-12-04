@@ -61,41 +61,41 @@ window.findNRooksSolution = function(n) {
 };
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
-// window.countNRooksSolutions = function(n) {
-//   var solutionCount = 0;
-//   var row = 0;
+window.countNRooksSolutions = function(n) {
+  var solutionCount = 0;
+  var row = 0;
 
-//   var start = new Board({'n':n});
+  var start = new Board({'n':n});
 
-//   var subroutine  = function(board) {
-//     if (row === n) {
-//       solutionCount++;
-//     } else {
-//       for (var col = 0; col < n; col++) {
-//         // add piece
-//         board.togglePiece(row, col);
+  var subroutine  = function(board) {
+    if (row === n) {
+      solutionCount++;
+    } else {
+      for (var col = 0; col < n; col++) {
+        // add piece
+        board.togglePiece(row, col);
 
-//         if (!board.hasAnyRooksConflicts()) {
-//           row++;
-//           subroutine(board);
-//           // remove piece
-//           row--;
-//           if (row !== n) {
-//             board.togglePiece(row, col);
-//           }
-//         } else {
-//           //remove piece
-//           board.togglePiece(row, col);
-//         }
-//       }
-//     }
+        if (!board.hasAnyRooksConflicts()) {
+          row++;
+          subroutine(board);
+          // remove piece
+          row--;
+          if (row !== n) {
+            board.togglePiece(row, col);
+          }
+        } else {
+          //remove piece
+          board.togglePiece(row, col);
+        }
+      }
+    }
   
-//   };
-//   subroutine(start);
+  };
+  subroutine(start);
 
-//   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
-//   return solutionCount;
-// };
+  console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
+  return solutionCount;
+};
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
