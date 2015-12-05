@@ -13,7 +13,20 @@
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
-
+var conflict = function(arr) {
+  var nonzero = {};
+  for (var i; i < arr.length; i++) {
+    if (arr[i] !== 0) {
+      if (nonzero[arr[i]] === undefined) {
+        nonzero[arr[i]] = arr[i];
+      } else {
+        return true;
+      }
+    }
+  }
+  
+  return false;
+}
 
 window.findNRooksSolution = function(n) {
   var solved = false;
@@ -69,9 +82,12 @@ window.findNRooksSolution = function(n) {
 window.countNRooksSolutions = function(n) {
   var solutionCount = 0;
   var row = 0;
-  var prevCol = [];
+  var prevCol = {};
 
-  var start = new Board({'n':n});
+  var start = [];
+  for (var i = 0; i < n; i++) {
+    start[i] = 0;
+  }
 
   var subroutine  = function(board) {
     if (row === n) {
@@ -79,29 +95,30 @@ window.countNRooksSolutions = function(n) {
     } else {
       for (var col = 0; col < n; col++) {
         // add piece
-        if (prevCol.indexOf(col) === -1) {
-          board.togglePiece(row, col);
-          prevCol.push(col);
+        if (prevCol[col] === undefined) {
+          start[row] = col;
+          prevCol[col] = col;
 
-          if (!board.hasAnyRooksConflicts()) {
+          if (!conflict(board)) {
             row++;
             subroutine(board);
             // remove piece
             row--;
             if (row !== n) {
-              board.togglePiece(row, col);
-              prevCol.pop(col);
+              start[row] = 0;
+              delete prevCol[col];
             }
           } else {
             //remove piece
-            board.togglePiece(row, col);
-            prevCol.pop(col);
+            start[row] = 0;
+            delete prevCol[col];
           }
         }
       }
     }
   
   };
+
   subroutine(start);
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
@@ -117,7 +134,7 @@ window.findNQueensSolution = function(n) {
 
   var start = new Board({'n':n});
 
-  var subroutine  = function(board) {
+  var subroutine = function(board) {
 
     if (row === n && !solution) {
       solution = new Board(board.rows());
